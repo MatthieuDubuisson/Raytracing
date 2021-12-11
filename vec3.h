@@ -19,13 +19,14 @@ class Vec3 {
         double operator[](int i) const { return e[i]; }
         double& operator[](int i) { return e[i]; }
 
+        // vector +operator
         Vec3& operator+=(const Vec3 &v) {
             e[0] += v.e[0];
             e[1] += v.e[1];
             e[2] += v.e[2];
             return *this;
         }
-
+        // multiply operator
         Vec3& operator*=(const double t) {
             e[0] *= t;
             e[1] *= t;
@@ -33,6 +34,7 @@ class Vec3 {
             return *this;
         }
 
+        // division operator
         Vec3& operator/=(const double t) {
             return *this *= 1/t;
         }
@@ -44,6 +46,15 @@ class Vec3 {
         double length_squared() const {
             return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
         }
+
+        inline Vec3 random(){
+            return Vec3(random_double(), random_double(), random_double());
+        }
+
+        inline static Vec3 random(double min, double max){
+            return Vec3(random_double(min,max), random_double(min, max), random_double(min,max));
+        }
+
 
     public:
         double e[3];
@@ -79,12 +90,14 @@ inline Vec3 operator/(Vec3 v, double t) {
     return (1/t) * v;
 }
 
+// dot product operation
 inline double dot(const Vec3 &u, const Vec3 &v) {
     return u.e[0] * v.e[0]
          + u.e[1] * v.e[1]
          + u.e[2] * v.e[2];
 }
 
+// cross product operation
 inline Vec3 cross(const Vec3 &u, const Vec3 &v) {
     return Vec3(u.e[1] * v.e[2] - u.e[2] * v.e[1],
                 u.e[2] * v.e[0] - u.e[0] * v.e[2],
@@ -93,6 +106,14 @@ inline Vec3 cross(const Vec3 &u, const Vec3 &v) {
 
 inline Vec3 unit_vector(Vec3 v) {
     return v / v.length();
+}
+
+Vec3 random_in_unit_sphere(){
+    while(true){
+        auto p = Vec3::random(-1,1);
+        if (p.length_squared() >=1) continue;
+        return p;
+    }
 }
 
 // Type aliases for Vec3
